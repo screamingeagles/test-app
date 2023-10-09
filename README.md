@@ -4,8 +4,8 @@
 
 
 
-### Once Connection String is Set Run below commands in nuget package manager console ### 
+### Once Connection string is set run below commands in nuget package manager console ### 
 
-Add-Migration Initial -o Model/migrations
+Add-Migration <Your_Migration_Name> -o Model/migrations
 
 update-database
