@@ -1,6 +1,6 @@
 # Testing Application #
 
-***First open appsettings.json and update databse settings in `dbModelConnection`.***
+***First open appsettings.json and update databse connection string in `dbModelConnection`.***
 
 
 
