@@ -1,12 +1,24 @@
 import axios from "axios"
 import {
+    GET_ROLE, SET_ROLE,
     MAKE_REQUEST, FAIL_REQUEST,
     GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT,
-    GET_FAMILY, ADD_FAMILY, GET_FAMILY_LIST, DELETE_FAMILY,
-    GET_ROLE, SET_ROLE
+    GET_FAMILY_LIST, GET_FAMILY, ADD_FAMILY, UPDATE_FAMILY, DELETE_FAMILY
 } from "./ActionType"
 
 const API_URL = 'https://localhost:7108/api'
+
+export const getRole = () => {
+    return {
+        type: GET_ROLE
+    }
+}
+export const setRole = (data) => {
+    return {
+        type: SET_ROLE,
+        payload: data
+    }
+}
 
 export const makeRequest = () => {
     return {
@@ -19,6 +31,7 @@ export const failRequest = (err) => {
         payload: err
     }
 }
+
 export const getStudentList = (data) => {
     return {
         type: GET_STUDENT_LIST,
@@ -41,6 +54,13 @@ export const updateStudent = () => {
         type: UPDATE_STUDENT
     }
 }
+
+export const getFamilyList = (data) => {
+    return {
+        type: GET_FAMILY_LIST,
+        payload: data
+    }
+}
 export const getFamily = (data) => {
     return {
         type: GET_FAMILY,
@@ -52,10 +72,9 @@ export const addFamily = () => {
         type: ADD_FAMILY
     }
 }
-export const getFamilyList = (data) => {
+export const updateFamily = () => {
     return {
-        type: GET_FAMILY_LIST,
-        payload: data
+        type: UPDATE_FAMILY
     }
 }
 export const deleteFamily = () => {
@@ -64,15 +83,16 @@ export const deleteFamily = () => {
     }
 }
 
-export const getRole = () => {
-    return {
-        type: GET_ROLE
+
+
+export const getRoleObject = () => {
+    return async (dispatch) => {
+        dispatch(getRole());
     }
 }
-export const setRole = (data) => {
-    return {
-        type: SET_ROLE,
-        payload: data
+export const setRoleObject = (role) => {
+    return (dispatch) => {
+        dispatch(setRole(role));
     }
 }
 
@@ -83,26 +103,6 @@ export const FetchStudentList = () => {
         await axios.get(`${API_URL}/Student`).then(res => {
             const studentList = res.data;
             dispatch(getStudentList(studentList));
-        }).catch(err => {
-            dispatch(failRequest(err.message))
-        })
-    }
-}
-export const FunctionAddStudent = (data) => {
-    return (dispatch) => {
-        dispatch(makeRequest());
-        axios.post(`${API_URL}/Student`, data).then(res => {
-            dispatch(addStudent());
-        }).catch(err => {
-            dispatch(failRequest(err.message))
-        })
-    }
-}
-export const FunctionUpdateStudent = (data, code) => {
-    return (dispatch) => {
-        dispatch(makeRequest());
-        axios.put(`${API_URL}/Student/${code}`, data).then(res => {
-            dispatch(updateStudent());
         }).catch(err => {
             dispatch(failRequest(err.message))
         })
@@ -119,12 +119,42 @@ export const FetchStudentObject = (code) => {
         })
     }
 }
-
-export const FunctionAddFamily = (data, code) => {
-    return (dispatch) => {
+export const FunctionAddStudent = (data) => {
+    return async (dispatch) => {
         dispatch(makeRequest());
-        axios.post(`${API_URL}/Student/${code}/FamilyMembers`, data).then(res => {
-            dispatch(addFamily());
+        try {
+            const response = await axios.post(`${API_URL}/Student`, data);
+            const obj = await response.data;
+            console.log(obj);
+            return dispatch(addStudent());
+        }
+        catch (err) {
+            return dispatch(failRequest(err.message));
+        }
+    }
+}
+export const FunctionUpdateStudent = (data, code) => {
+    return async (dispatch) => {
+        dispatch(makeRequest());
+        try {
+            const response = await axios.put(`${API_URL}/Student/${code}`, data);
+            const obj = await response.data;
+            console.log(obj);
+            return dispatch(updateStudent());
+        }
+        catch (err) {
+            return dispatch(failRequest(err.message));
+        }
+    }
+}
+
+
+export const FetchFamilyList = (code) => {
+    return async (dispatch) => {
+        dispatch(makeRequest());
+        await axios.get(`${API_URL}/FamilyMembers/List/${code}`).then(res => {
+            const familyList = res.data;
+            dispatch(getFamilyList(familyList));
         }).catch(err => {
             dispatch(failRequest(err.message))
         })
@@ -141,34 +171,40 @@ export const FetchFamilyObject = (code) => {
         })
     }
 }
+export const FunctionAddFamily = (data, code) => {
+    return async (dispatch) => {
+        dispatch(makeRequest());
+        try {
+            const response = await axios.post(`${API_URL}/Student/${code}/FamilyMembers`, data);
+            const obj = await response.data;
+            console.log(obj);
+            return dispatch(addFamily());
+        }
+        catch (err) {
+            return dispatch(failRequest(err.message));
+        }
+    }
+}
+export const FunctionUpdateFamily = (data, code) => {
+    return async (dispatch) => {
+        dispatch(makeRequest());
+        try {
+            const response = await axios.put(`${API_URL}/FamilyMembers/${code}`, data);
+            const obj = await response.data;
+            console.log(obj);
+            return dispatch(updateFamily());
+        }
+        catch (err) {
+            return dispatch(failRequest(err.message));
+        }
+    }
+}
 export const FetchFamilyViewObject = (code) => {
     return (dispatch) => {
         dispatch(makeRequest());
         axios.get(`${API_URL}/FamilyMembers/${code}/`).then(res => {
             const familyObject = res.data;
             dispatch(getFamily(familyObject));
-        }).catch(err => {
-            dispatch(failRequest(err.message))
-        })
-    }
-}
-
-export const FunctionUpdateFamily = (data, code) => {
-    return (dispatch) => {
-        dispatch(makeRequest());
-        axios.put(`${API_URL}/FamilyMembers/${code}`, data).then(res => {
-            dispatch(addFamily());
-        }).catch(err => {
-            dispatch(failRequest(err.message))
-        })
-    }
-}
-export const FetchFamilyList = (code) => {
-    return async (dispatch) => {
-        dispatch(makeRequest());
-        await axios.get(`${API_URL}/FamilyMembers/List/${code}`).then(res => {
-            const familyList = res.data;
-            dispatch(getFamilyList(familyList));
         }).catch(err => {
             dispatch(failRequest(err.message))
         })
@@ -182,16 +218,5 @@ export const RemoveFamily = (code) => {
         }).catch(err => {
             dispatch(failRequest(err.message))
         })
-    }
-}
-
-export const setRoleObject = (role) => {
-    return (dispatch) => {
-        dispatch(setRole(role));
-    }
-}
-export const getRoleObject = () => {
-    return async (dispatch) => {
-        dispatch(getRole());
     }
 }
