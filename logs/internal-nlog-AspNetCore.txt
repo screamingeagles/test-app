@@ -26,3 +26,38 @@
 2023-10-10 11:08:32.0490 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
 2023-10-10 11:08:32.1075 Info Configuration initialized.
 2023-10-10 11:08:33.1961 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 11:37:30.7829 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-10-10 11:37:31.5574 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2023-10-10 11:37:31.7489 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2023-10-10 11:37:32.0688 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.4.2092. Product version: 5.2.4+5ed75b125a691ce9f01e64641f1a79f438385847. GlobalAssemblyCache: False
+2023-10-10 11:37:32.2364 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 11:37:32.3071 Info Configuration initialized.
+2023-10-10 11:37:33.8822 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 17:37:02.6374 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-10-10 17:37:02.6916 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2023-10-10 17:37:02.6944 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2023-10-10 17:37:02.8180 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.4.2092. Product version: 5.2.4+5ed75b125a691ce9f01e64641f1a79f438385847. GlobalAssemblyCache: False
+2023-10-10 17:37:03.0275 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 17:37:03.0961 Info Configuration initialized.
+2023-10-10 17:37:04.7033 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 17:41:28.9880 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-10-10 17:41:29.0378 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2023-10-10 17:41:29.0378 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2023-10-10 17:41:29.0836 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.4.2092. Product version: 5.2.4+5ed75b125a691ce9f01e64641f1a79f438385847. GlobalAssemblyCache: False
+2023-10-10 17:41:29.1843 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 17:41:29.2432 Info Configuration initialized.
+2023-10-10 17:41:31.4260 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 19:10:17.1214 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-10-10 19:10:17.1869 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2023-10-10 19:10:17.1968 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2023-10-10 19:10:17.2517 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.4.2092. Product version: 5.2.4+5ed75b125a691ce9f01e64641f1a79f438385847. GlobalAssemblyCache: False
+2023-10-10 19:10:17.3207 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 19:10:17.3732 Info Configuration initialized.
+2023-10-10 19:10:18.6205 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 20:12:53.5030 Info Registered target NLog.Targets.FileTarget(Name=allfile)
+2023-10-10 20:12:53.5783 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2023-10-10 20:12:53.6005 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2023-10-10 20:12:53.6563 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.4.2092. Product version: 5.2.4+5ed75b125a691ce9f01e64641f1a79f438385847. GlobalAssemblyCache: False
+2023-10-10 20:12:53.8129 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config
+2023-10-10 20:12:53.9207 Info Configuration initialized.
+2023-10-10 20:12:57.9958 Info Validating config: TargetNames=allfile, lifetimeConsole, ownFile-web, ConfigItems=54, FilePath=D:\Development\test-app\bin\Debug\net7.0\NLog.config

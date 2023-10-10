@@ -7,6 +7,7 @@ export const FAIL_REQUEST = 'FAIL_REQUEST'
 
 
 export const GET_STUDENT_LIST = 'GET_STUDENT_LIST'
+export const REFRESH_STUDENT = 'REFRESH_STUDENT'
 export const GET_STUDENT = 'GET_STUDENT'
 export const ADD_STUDENT = 'ADD_STUDENT'
 export const UPDATE_STUDENT = 'UPDATE_STUDENT'

@@ -2,7 +2,7 @@ import axios from "axios"
 import {
     GET_ROLE, SET_ROLE,
     MAKE_REQUEST, FAIL_REQUEST,
-    GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT, DELETE_STUDENT,
+    GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT, DELETE_STUDENT, REFRESH_STUDENT,
     GET_FAMILY_LIST, GET_FAMILY, ADD_FAMILY, UPDATE_FAMILY, DELETE_FAMILY
 } from "./ActionType"
 
@@ -59,7 +59,12 @@ export const deleteStudent = () => {
         type: DELETE_STUDENT
     }
 }
-
+export const refreshStd = (data) => {
+    return {
+        type: REFRESH_STUDENT,
+        payload: data
+    }
+}
 
 export const getFamilyList = (data) => {
     return {
@@ -132,7 +137,14 @@ export const FunctionAddStudent = (data) => {
             const response = await axios.post(`${API_URL}/Student`, data);
             const obj = await response.data;
             console.log(obj);
-            return dispatch(addStudent());
+            const newObj = {
+                id: obj.ID,
+                firstName: obj.firstName,
+                lastName: obj.lastName,
+                dateOfBirth: obj.dateOfBirth,
+                nationalityId: 0
+            };            
+            return dispatch(await refreshStd(newObj));
         }
         catch (err) {
             return dispatch(failRequest(err.message));

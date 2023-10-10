@@ -1,55 +1,65 @@
-import { useState } from "react";
 import { FunctionAddStudent } from "../../Redux/Action";
-import { Link, useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
+import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import DatePicker from 'react-datepicker';
+import { useState } from "react";
 import "./Student.css"
 
 const StudentAdd = () => {
+    const [show, setShow] = useState(false);
     const [firstName, firstNamechange] = useState('');
     const [lastName, lastNamechange] = useState('');
     const [dateOfBirth, dateOfBirthchange] = useState('');
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
-    const handlesubmit = (e) => {
+    const handlesubmit = async (e) => {
         e.preventDefault();
-        if (firstName == '' || lastName == '' || dateOfBirth == '') {
-            alert("Please Provide mandatory fields");
-            return;
-        }
         const studentobj = { firstName, lastName, dateOfBirth };
-        dispatch(FunctionAddStudent(studentobj));
-        navigate('/students');
+        await dispatch(await FunctionAddStudent(studentobj));
+        setShow(false);
     }
-
-
+    
     return (
-        <div>
-            <form onSubmit={handlesubmit}>
-                <div className="card">
-                    <div className="card-header" style={{ textAlign: 'left' }}>
-                        <h2>Add User</h2>
-                    </div>
-                    <div className="card-body" style={{ textAlign: 'left' }}>
+        <>
+            <button type='button' className='btn btn-success'
+                onClick={handleShow}
+                data-toggle='modal'
+                data-target='#modal-lg'>Add Student [+]</button>
+
+            <Modal show={show} onHide={handleClose} className="modal-xl">
+                <Modal.Header closeButton>
+                    <Modal.Title>Add New Student</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* save card body start  */}
+                    <div className="card-body">
                         <div className="row">
-                            <div className="col-lg-12">
+                            <div className="col-sm-12">
                                 <div className="form-group">
-                                    <label>First Name</label><label style={{ color: 'red', fontSize: 10 + 'pt' }}>*</label>
-                                    <input value={firstName} onChange={e => firstNamechange(e.target.value)} className="form-control"></input>
+                                    <label htmlFor="InputFirstName">First Name</label>
+                                    <input value={firstName || ''}
+                                        className="form-control"
+                                        placeholder="Enter First Name"
+                                        onChange={e => firstNamechange(e.target.value)} ></input>
+                                </div>
+                            </div>
+                            <div className="col-sm-12">
+                                <div className="form-group">
+                                    <label htmlFor="InputLastName">Last Name</label>
+                                    <input value={lastName || ''}
+                                        className="form-control"
+                                        placeholder="Enter Last Name"
+                                        onChange={e => lastNamechange(e.target.value)}></input>
+
                                 </div>
                             </div>
                             <div className="col-lg-12">
                                 <div className="form-group">
-                                    <label>Last Name</label><label style={{ color: 'red', fontSize: 10 + 'pt' }}>*</label>
-                                    <input value={lastName} onChange={e => lastNamechange(e.target.value)} className="form-control"></input>
-                                </div>
-                            </div>
-                            <div className="col-lg-12">
-                                <div className="form-group">
-                                    <label>Date of Birth</label><label style={{ color: 'red', fontSize: 10 + 'pt' }}>*</label><br />
+                                    <label>Date of Birth</label><br />
                                     <DatePicker selected={dateOfBirth}
                                         onChange={(date) => dateOfBirthchange(date)}
                                         dateFormat="dd-MMM-yyyy"
@@ -59,14 +69,18 @@ const StudentAdd = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="card-footer" style={{ textAlign: 'left' }}>
-                        <button className="btn btn-primary" type="submit">Submit</button> |
-                        <Link className="btn btn-danger" to={'/students'}>Back</Link>
-                    </div>
-
-                </div>
-            </form>
-        </div>
+                    {/* save card body end */}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handlesubmit}>
+                        Save
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 }
 

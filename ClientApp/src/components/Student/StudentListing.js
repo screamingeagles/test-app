@@ -3,6 +3,7 @@ import { formatDate } from './../../features';
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import StudentAdd from './StudentAdd';
 
 const Studentlisting = (props) => {
 
@@ -40,7 +41,7 @@ const Studentlisting = (props) => {
                             <div className="row">
                                 <div className="col-md-8"></div>
                                 <div className="col-md-2">
-                                    &nbsp;
+                                    <StudentAdd />
                                 </div>
                                 <div className="col-md-2">
                                     <select value={role} onChange={e => rolechange(e.target.value)} className="form-control">

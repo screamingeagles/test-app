@@ -1,4 +1,4 @@
-import { MAKE_REQUEST, FAIL_REQUEST, GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT, DELETE_STUDENT } from "./ActionType"
+import { MAKE_REQUEST, FAIL_REQUEST, GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT, DELETE_STUDENT, REFRESH_STUDENT } from "./ActionType"
 
 const initialStudentstate = {
     loading: true,
@@ -43,6 +43,12 @@ export const studentReducer = (state = initialStudentstate, action) => {
         case DELETE_STUDENT: return {
             ...state,
             loading: false
+        }
+        case REFRESH_STUDENT: return {
+            loading: false,
+            errmessage: '',
+            studentList: [...state.studentList, action.payload],
+            studentObj: {}
         }
         default: return state
     }
