@@ -2,9 +2,7 @@ import { FetchFamilyObject } from "../../Redux/Action";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
-import Relation from './../Common/RelationCombo';
-import Country from './../Common/CountryCombo';
-import DatePicker from 'react-datepicker';
+import { formatDate } from './../../features';
 import { useEffect, useState } from "react";
 
 const FamilyUpdate = () => {
@@ -12,30 +10,14 @@ const FamilyUpdate = () => {
     const [firstName, firstNamechange] = useState('');
     const [lastName, lastNamechange] = useState('');
     const [dateOfBirth, dateOfBirthchange] = useState('');
-    const [nationalityId, nationalitychange] = useState(0);
-    const [relationshipId, relationshipchange] = useState(0);
+    const [countryName, countrynamechange] = useState('');
+    const [relationshipName, relationshipnamechange] = useState('');
     const [studentId, studentIdchange] = useState(0);
 
     const dispatch = useDispatch();
     const { code } = useParams();
 
     const familyobj = useSelector((state) => state.family.familyObj);
-
-    // here get the selected Relation
-    // from RelationCombo component
-    const getRelationshipValue = (data) => {
-        // get id of the relation and set state
-        relationshipchange(data);
-    }
-
-
-    // here get the selected country
-    // from CountryCombo component
-    const getCountryValue = (data) => {
-        // get id of the country and set state
-        nationalitychange(data);
-    }
-
 
     useEffect(() => {
         dispatch(FetchFamilyObject(code));
@@ -47,8 +29,8 @@ const FamilyUpdate = () => {
             firstNamechange(familyobj.firstName);
             lastNamechange(familyobj.lastName);
             dateOfBirthchange(Date.parse(familyobj.dateOfBirth));
-            nationalitychange(familyobj.nationalityId);
-            relationshipchange(familyobj.relationshipId);
+            countrynamechange(familyobj.countryName);
+            relationshipnamechange(familyobj.relationshipName);
             studentIdchange(familyobj.studentID);
         }
     }, [familyobj])
@@ -84,23 +66,19 @@ const FamilyUpdate = () => {
                             <div className="col-lg-12">
                                 <div className="form-group">
                                     <label>Date of Birth</label><br />
-                                    <DatePicker selected={dateOfBirth}
-                                        disabled="disabled"
-                                        dateFormat="dd-MMM-yyyy"
-                                        wrapperClassName="datepicker"
-                                        className="form-control" />
+                                    <input value={formatDate(dateOfBirth) || ''} disabled="disabled" className="form-control"></input>
                                 </div>
                             </div>
                             <div className="col-lg-12">
                                 <div className="form-group">
                                     <label>Country</label><br />
-                                    <Country childToParent={getCountryValue} countryValue={nationalityId} />
+                                    <input value={countryName || ''} disabled="disabled" className="form-control"></input>
                                 </div>
                             </div>
                             <div className="col-lg-12">
                                 <div className="form-group">
                                     <label>Relationship to Student</label><br />
-                                    <Relation childToParent={getRelationshipValue} countryValue={relationshipId} />
+                                    <input value={relationshipName || ''} disabled="disabled" className="form-control"></input>
                                 </div>
                             </div>
                         </div>

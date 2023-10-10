@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using test_app.Controllers;
 using test_app.Model;
 
@@ -14,7 +15,7 @@ namespace test_app.Service
         StudentObject AddStudent(StudentObject param);
         StudentObject UpdateStudent(StudentObject param, int? countryId);
         StudentObject GetStudent(int ID, bool family = false, bool nationality = false);
-        FamilyObject GetFamilyMember(int FamilyMemberID);
+        FamilyListObject GetFamilyMember(int FamilyMemberID);
         IEnumerable<FamilyObject> GetStudentFamilyMembers(int StudentID);
         FamilyObject AddFamilyMember(int StudentID, FamilyObject param);
         FamilyObject GetFamilyMembers(int ID, int NationalityID);        
@@ -263,22 +264,36 @@ namespace test_app.Service
             }
         }
 
-        public FamilyObject GetFamilyMember(int FamilyMemberID)
+        public FamilyListObject GetFamilyMember(int FamilyMemberID)
         {
-            FamilyObject fo = new FamilyObject();
+            FamilyListObject? fo = new FamilyListObject();
             try
             {
-                FamilyMember fm = db.FamilyMembers.Find(FamilyMemberID);
+                fo = db.FamilyMembers.Join(db.Relations,
+                        m => m.RelationshipId,
+                        d => d.RelationshipId,
+                        (m, d) => new { family = m, relation = d })
+                        .Select(x => new FamilyListObject
+                        {
+                            ID = x.family.ID,
+                            firstName = x.family.FirstName,
+                            lastName = x.family.LastName,
+                            dateOfBirth = x.family.DateOfBirth,
+                            relationshipId = x.family.RelationshipId,
+                            relationshipName = x.relation.RelationshipName,
+                            nationalityId = x.family.NationalityId,
+                            countryName = "",
+                            studentID = x.family.StudentID
+                        }).Where(x => x.ID == FamilyMemberID).FirstOrDefault();
 
-                if (fm != null)
-                {
-                    fo.ID = fm.ID;
-                    fo.firstName = fm.FirstName;
-                    fo.lastName = fm.LastName;
-                    fo.dateOfBirth = fm.DateOfBirth;
-                    fo.nationalityId = fm.NationalityId;
-                    fo.relationshipId = fm.RelationshipId;
-                    fo.studentID = fm.StudentID;
+                if (fo != null && fo.nationalityId.HasValue) {
+                    var cmp = db.Nationalities
+                                .Where(x => x.NationalityId == fo.nationalityId.Value)
+                                .Select(x => new { CountryName = x.CountryName })
+                                .FirstOrDefault();
+                    if (cmp!= null) {
+                        fo.countryName = cmp.CountryName;
+                    }                    
                 }
                 return fo;
             }

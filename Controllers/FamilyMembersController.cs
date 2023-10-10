@@ -24,7 +24,7 @@ namespace test_app.Controllers
         {            
             try
             {
-                FamilyObject fo = service.GetFamilyMember(id);
+                FamilyListObject fo = service.GetFamilyMember(id);
                 
                 string json = JsonConvert.SerializeObject(
                        fo,
