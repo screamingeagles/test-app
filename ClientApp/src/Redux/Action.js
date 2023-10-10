@@ -2,7 +2,7 @@ import axios from "axios"
 import {
     GET_ROLE, SET_ROLE,
     MAKE_REQUEST, FAIL_REQUEST,
-    GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT,
+    GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT, DELETE_STUDENT,
     GET_FAMILY_LIST, GET_FAMILY, ADD_FAMILY, UPDATE_FAMILY, DELETE_FAMILY
 } from "./ActionType"
 
@@ -54,6 +54,12 @@ export const updateStudent = () => {
         type: UPDATE_STUDENT
     }
 }
+export const deleteStudent = () => {
+    return {
+        type: DELETE_STUDENT
+    }
+}
+
 
 export const getFamilyList = (data) => {
     return {
@@ -141,6 +147,20 @@ export const FunctionUpdateStudent = (data, code) => {
             const obj = await response.data;
             console.log(obj);
             return dispatch(updateStudent());
+        }
+        catch (err) {
+            return dispatch(failRequest(err.message));
+        }
+    }
+}
+export const FunctionRemoveStudent = (code) => {
+    return async (dispatch) => {
+        dispatch(makeRequest());
+        try {
+            const response = await axios.delete(`${API_URL}/Student/${code}`);
+            const obj = await response.data;
+            console.log(obj);
+            return dispatch(deleteStudent());
         }
         catch (err) {
             return dispatch(failRequest(err.message));

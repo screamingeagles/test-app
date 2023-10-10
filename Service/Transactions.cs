@@ -22,6 +22,7 @@ namespace test_app.Service
         FamilyObject UpdateFamilyMember(int ID, FamilyObject param);
         FamilyObject UpdateFamilyMemberNationality(int ID, int countryId);
         IEnumerable<FamilyListObject> GetFamilyMembersList(int ID);
+        int DeleteStudent(int ID);
         int DeleteFamilyMember(int ID);
         IEnumerable<NationalityObject> GetAllNationalities();
         NationalityObject AddCountry(NationalityObject param);
@@ -243,8 +244,28 @@ namespace test_app.Service
                 return null;
             }
         }
-
-        public int DeleteFamilyMember(int ID)
+        public int DeleteStudent        (int ID)    
+        {
+            try
+            {
+                Student std = db.Students.Find(ID);
+                if (std != null)
+                {
+                    db.Students.Remove(std);
+                    return db.SaveChanges();
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception exi)
+            {
+                _logger.LogError("Exception-Delete: " + exi.Message);
+                return -1;
+            }
+        }
+        public int DeleteFamilyMember   (int ID)    
         {
             try
             {

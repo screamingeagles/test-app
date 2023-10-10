@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { FetchStudentList, FunctionRemoveStudent, setRoleObject } from "../../Redux/Action";
 import { formatDate } from './../../features';
-import { FetchStudentList, setRoleObject } from "../../Redux/Action";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 const Studentlisting = (props) => {
 
@@ -17,6 +16,19 @@ const Studentlisting = (props) => {
         props.loadStudent();
         props.setRole(role);
     }, [role])
+
+    const btnstylehere = {
+        color: '#FFFFFF',
+        backgroundColor: '#000'
+    }
+
+    const handledelete = (id) => {
+        if (window.confirm(`Do you want to remove Student with id: ${id}?`)) {
+            props.removeStudent(id);
+            const index = props.student.studentList.findIndex((item) => item.id == id);
+            props.student.studentList.splice(index, 1);
+        }
+    }
 
     return (
         props.student.loading ? <div><h2>Loading...</h2></div> :
@@ -57,11 +69,21 @@ const Studentlisting = (props) => {
                                                 <td>{formatDate(item.dateOfBirth)}</td>
                                                 <td>
                                                     {
-                                                        role == "registrar" ?
-                                                            <Link to={'/student/edit/' + item.id} className="btn btn-primary">Edit</Link> :
-                                                            <Link to={'/student/view/' + item.id} className="btn btn-success">View</Link>
+                                                        role !== "registrar" ?
+                                                            <div>
+                                                                <Link to={'/student/view/' + item.id} className="btn btn-success">View</Link>
+                                                                &nbsp;
+                                                                <Link to={'/family/' + item.id} className="btn btn-default" style={btnstylehere}>Family</Link>
+                                                            </div>
+                                                            :
+                                                            <div>
+                                                                <Link to={'/student/edit/' + item.id} className="btn btn-primary">Edit</Link>
+                                                                &nbsp;
+                                                                <button onClick={() => { handledelete(item.id) }} className="btn btn-danger">Delete</button>
+                                                                &nbsp;
+                                                                <Link to={'/family/' + item.id} className="btn btn-default" style={btnstylehere}>Family</Link>
+                                                            </div>
                                                     }
-                                                    <Link to={'/family/' + item.id} className="btn btn-danger">Family</Link>
                                                 </td>
                                             </tr>
                                         )
@@ -83,7 +105,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         loadStudent: () => dispatch(FetchStudentList()),
-        setRole: (role) => dispatch(setRoleObject(role))
+        setRole: (role) => dispatch(setRoleObject(role)),
+        removeStudent: (id) => dispatch(FunctionRemoveStudent(id)),
     }
 }
 

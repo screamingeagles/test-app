@@ -165,5 +165,25 @@ namespace test_app.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteStudent(int id)
+        {            
+            _logger.LogInformation($"DELETE API called for Deleting Student at: {DateTime.Now}");
+            try {
+                int res = service.DeleteStudent(id);
+                if (res > 0) {
+                    return Ok("Success");
+                }
+                else {
+                    return BadRequest("Invalid Data Provided");
+                }
+            }
+            catch (Exception) {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error Deleting Student id: {id}");
+            }
+        }
+
     }
 }

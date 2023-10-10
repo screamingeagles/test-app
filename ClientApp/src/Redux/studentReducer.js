@@ -1,4 +1,4 @@
-import { MAKE_REQUEST, FAIL_REQUEST, GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT, GET_FAMILY } from "./ActionType"
+import { MAKE_REQUEST, FAIL_REQUEST, GET_STUDENT_LIST, GET_STUDENT, ADD_STUDENT, UPDATE_STUDENT, DELETE_STUDENT } from "./ActionType"
 
 const initialStudentstate = {
     loading: true,
@@ -37,6 +37,10 @@ export const studentReducer = (state = initialStudentstate, action) => {
             loading: false
         }
         case UPDATE_STUDENT: return {
+            ...state,
+            loading: false
+        }
+        case DELETE_STUDENT: return {
             ...state,
             loading: false
         }
