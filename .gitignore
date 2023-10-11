@@ -27,7 +27,7 @@ Obj/
 # Visual Studio 2015 cache/options directory
 .vs/
 /wwwroot/dist/
-appsettings.json
+/appsettings.json
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -231,4 +231,3 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-/appsettings.json
