@@ -33,8 +33,10 @@ export const familyReducer = (state = initialFamilystate, action) => {
             familyObj: action.payload
         }
         case ADD_FAMILY: return {
-            ...state,
-            loading: false
+            loading: false,
+            errmessage: '',
+            familyList: [...state.familyList, action.payload],
+            familyObj: {}
         }
         case UPDATE_FAMILY: return {
             ...state,

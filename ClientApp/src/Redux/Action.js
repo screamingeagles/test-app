@@ -78,9 +78,10 @@ export const getFamily = (data) => {
         payload: data
     }
 }
-export const addFamily = () => {
+export const addFamily = (data) => {
     return {
-        type: ADD_FAMILY
+        type: ADD_FAMILY,
+        payload: data
     }
 }
 export const updateFamily = () => {
@@ -209,8 +210,16 @@ export const FunctionAddFamily = (data, code) => {
         try {
             const response = await axios.post(`${API_URL}/Student/${code}/FamilyMembers`, data);
             const obj = await response.data;
-            console.log(obj);
-            return dispatch(addFamily());
+            const newObj = {
+                id: obj.ID,
+                firstName: obj.firstName,
+                lastName: obj.lastName,
+                dateOfBirth: obj.dateOfBirth,
+                nationalityId: obj.nationalityId,
+                studentID: code
+            };
+            console.log(newObj);
+            return dispatch(await addFamily(newObj));
         }
         catch (err) {
             return dispatch(failRequest(err.message));
