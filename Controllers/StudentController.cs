@@ -60,7 +60,7 @@ namespace test_app.Controllers
             if (id.HasValue == false)
                 return BadRequest("Student ID Not Found");
 
-            FamilyObject res = service.AddFamilyMember(id.Value, obj);            
+            FamilyObject? res = service.AddFamilyMember(id.Value, obj);            
             if (res == null)
             {
                 return BadRequest("Invalid Data Provided");

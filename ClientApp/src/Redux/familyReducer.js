@@ -38,10 +38,27 @@ export const familyReducer = (state = initialFamilystate, action) => {
             familyList: [...state.familyList, action.payload],
             familyObj: {}
         }
-        case UPDATE_FAMILY: return {
-            ...state,
-            loading: false
-        }
+        case UPDATE_FAMILY:
+            const newFamilyList = state.familyList.map(p =>
+                p.id === action.payload.id ?
+                    {
+                        id: action.payload.id,
+                        firstName: action.payload.firstName,
+                        lastName: action.payload.lastName,
+                        studentID: action.payload.studentID,
+                        dateOfBirth: action.payload.dateOfBirth,
+                        relationshipId: action.payload.relationshipId,
+                        relationshipName: action.payload.relationshipName,
+                        nationalityId: action.payload.nationalityId,
+                        countryName: action.payload.countryName
+                    } : p
+            );
+            return {
+                loading: false,
+                errmessage: '',
+                familyList: newFamilyList,
+                familyObj: {}
+            }
         case DELETE_FAMILY: return {
             ...state,
             loading: false

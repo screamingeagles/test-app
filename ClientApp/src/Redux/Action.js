@@ -84,9 +84,10 @@ export const addFamily = (data) => {
         payload: data
     }
 }
-export const updateFamily = () => {
+export const updateFamily = (data) => {
     return {
-        type: UPDATE_FAMILY
+        type: UPDATE_FAMILY,
+        payload: data
     }
 }
 export const deleteFamily = () => {
@@ -215,7 +216,10 @@ export const FunctionAddFamily = (data, code) => {
                 firstName: obj.firstName,
                 lastName: obj.lastName,
                 dateOfBirth: obj.dateOfBirth,
+                relationshipId: obj.relationshipId,
+                relationshipName: obj.relationshipName,
                 nationalityId: obj.nationalityId,
+                countryName: obj.countryName,
                 studentID: code
             };
             console.log(newObj);
@@ -232,8 +236,19 @@ export const FunctionUpdateFamily = (data, code) => {
         try {
             const response = await axios.put(`${API_URL}/FamilyMembers/${code}`, data);
             const obj = await response.data;
-            console.log(obj);
-            return dispatch(updateFamily());
+            const newObj = {
+                id: obj.ID,
+                firstName: obj.firstName,
+                lastName: obj.lastName,
+                dateOfBirth: obj.dateOfBirth,
+                relationshipId: obj.relationshipId,
+                relationshipName: obj.relationshipName,
+                nationalityId: obj.nationalityId,
+                countryName: obj.countryName,
+                studentID: code
+            };
+            //console.log(newObj);            
+            return dispatch(updateFamily(newObj));
         }
         catch (err) {
             return dispatch(failRequest(err.message));

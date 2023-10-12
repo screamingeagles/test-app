@@ -15,13 +15,13 @@ namespace test_app.Service
         StudentObject AddStudent(StudentObject param);
         StudentObject UpdateStudent(StudentObject param, int? countryId);
         StudentObject GetStudent(int ID, bool family = false, bool nationality = false);
-        FamilyListObject GetFamilyMember(int FamilyMemberID);
+        FamilyObject GetFamilyMember(int FamilyMemberID);
         IEnumerable<FamilyObject> GetStudentFamilyMembers(int StudentID);
-        FamilyObject AddFamilyMember(int StudentID, FamilyObject param);
-        FamilyObject GetFamilyMembers(int ID, int NationalityID);        
-        FamilyObject UpdateFamilyMember(int ID, FamilyObject param);
-        FamilyObject UpdateFamilyMemberNationality(int ID, int countryId);
-        IEnumerable<FamilyListObject> GetFamilyMembersList(int ID);
+        FamilyObject? AddFamilyMember(int StudentID, FamilyObject param);
+        FamilyObject GetFamilyMembers(int ID, int NationalityID);
+        FamilyObject? UpdateFamilyMember(int ID, FamilyObject param);
+        FamilyObject? UpdateFamilyMemberNationality(int ID, int countryId);
+        IEnumerable<FamilyObject> GetFamilyMembersList(int ID);
         int DeleteStudent(int ID);
         int DeleteFamilyMember(int ID);
         IEnumerable<NationalityObject> GetAllNationalities();
@@ -192,8 +192,8 @@ namespace test_app.Service
             }
         }
 
-        public FamilyObject AddFamilyMember(int StudentID, FamilyObject param)
-        {
+        public FamilyObject? AddFamilyMember(int StudentID, FamilyObject param)
+        {            
             try {
                 FamilyMember family = new FamilyMember();
                 family.FirstName = param.firstName;
@@ -203,11 +203,10 @@ namespace test_app.Service
                 family.StudentID = StudentID;
                 if (param.nationalityId.HasValue) { family.NationalityId = param.nationalityId; }               
                 db.FamilyMembers.Add(family);
-                db.SaveChanges();
-                
+                db.SaveChanges();                
                 param.ID = family.ID;
-                //param.relationshipId = StudentID;
-                return param;
+
+                return family.ID > 0 ? GetFamilyMemberDetails(family.ID) : null;
             }
             catch (Exception exi)
             {
@@ -216,7 +215,7 @@ namespace test_app.Service
             }
         }
 
-        public FamilyObject UpdateFamilyMember(int ID, FamilyObject param)
+        public FamilyObject? UpdateFamilyMember(int ID, FamilyObject param)
         {
             try {
                 FamilyMember family= db.FamilyMembers.Find(ID);
@@ -237,7 +236,7 @@ namespace test_app.Service
                 else {
                     _logger.LogInformation("No Matching Record Found In DB");
                 }
-                return param;
+                return GetFamilyMemberDetails(ID);
             }
             catch (Exception exi) {
                 _logger.LogError("Exception-Update: " + exi.Message);
@@ -285,16 +284,16 @@ namespace test_app.Service
             }
         }
 
-        public FamilyListObject GetFamilyMember(int FamilyMemberID)
+        public FamilyObject GetFamilyMember(int FamilyMemberID)
         {
-            FamilyListObject? fo = new FamilyListObject();
+            FamilyObject? fo = new FamilyObject();
             try
             {
                 fo = db.FamilyMembers.Join(db.Relations,
                         m => m.RelationshipId,
                         d => d.RelationshipId,
                         (m, d) => new { family = m, relation = d })
-                        .Select(x => new FamilyListObject
+                        .Select(x => new FamilyObject
                         {
                             ID = x.family.ID,
                             firstName = x.family.FirstName,
@@ -350,7 +349,7 @@ namespace test_app.Service
             }
         }
 
-        public FamilyObject UpdateFamilyMemberNationality(int ID, int countryId)
+        public FamilyObject? UpdateFamilyMemberNationality(int ID, int countryId)
         {
             FamilyObject obj = new FamilyObject();
             try
@@ -374,7 +373,7 @@ namespace test_app.Service
                 {
                     _logger.LogInformation("No Matching Record Found In DB");
                 }
-                return obj;
+                return GetFamilyMemberDetails(ID);
             }
             catch (Exception exi)
             {
@@ -384,7 +383,7 @@ namespace test_app.Service
         }
 
 
-        public IEnumerable<FamilyListObject> GetFamilyMembersList(int ID)
+        public IEnumerable<FamilyObject> GetFamilyMembersList(int ID)
         {
 
             try
@@ -406,11 +405,11 @@ namespace test_app.Service
                                   studenID = m.StudentID
                               }).ToList();
 
-                IEnumerable<FamilyListObject> result = master.Join(db.Relations,
+                IEnumerable<FamilyObject> result = master.Join(db.Relations,
                      m => m.relationshipId,
                      d => d.RelationshipId,
                      (m, d) => new { family = m, relation = d })
-                     .Select(x => new FamilyListObject
+                     .Select(x => new FamilyObject
                      {
                          ID = x.family.id,
                          firstName = x.family.firstname,
@@ -485,6 +484,45 @@ namespace test_app.Service
             {
                 _logger.LogError("Exception Add Nationality: " + exi.Message);
                 return -1;
+            }
+        }
+
+        private FamilyObject? GetFamilyMemberDetails(int ID)
+        {
+            FamilyObject? flo = new FamilyObject();
+            try
+            {
+                flo = db.FamilyMembers.Join(db.Relations,
+                        m => m.RelationshipId,
+                        d => d.RelationshipId,
+                        (m, d) => new { family = m, relation = d })
+                        .Select(x => new FamilyObject
+                        {
+                            ID = x.family.ID,
+                            firstName = x.family.FirstName,
+                            lastName = x.family.LastName,
+                            dateOfBirth = x.family.DateOfBirth,
+                            relationshipId = x.family.RelationshipId,
+                            relationshipName = x.relation.RelationshipName,
+                            nationalityId = x.family.NationalityId,
+                            countryName = "",
+                            studentID = x.family.StudentID
+                        }).Where(x => x.ID == ID).FirstOrDefault();
+
+                if (flo != null && flo.nationalityId.HasValue) {
+                    var cmp = db.Nationalities
+                                .Where(x => x.NationalityId == flo.nationalityId.Value)
+                                .Select(x => new { CountryName = x.CountryName })
+                                .FirstOrDefault();
+                    if (cmp != null) {
+                        flo.countryName = cmp.CountryName;
+                    }
+                }
+                return flo;
+            }
+            catch (Exception exi) {
+                _logger.LogError("Exception Get Family Member Complete Details: " + exi.Message);
+                return null;
             }
         }
 

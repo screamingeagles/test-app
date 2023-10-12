@@ -24,7 +24,7 @@ namespace test_app.Controllers
         {            
             try
             {
-                FamilyListObject fo = service.GetFamilyMember(id);
+                FamilyObject fo = service.GetFamilyMember(id);
                 
                 string json = JsonConvert.SerializeObject(
                        fo,
@@ -128,7 +128,7 @@ namespace test_app.Controllers
 
         [HttpGet]
         [Route("List/{id}")]
-        public IEnumerable<FamilyListObject> GetFamilyList(int id)
+        public IEnumerable<FamilyObject> GetFamilyList(int id)
         {
             try
             {

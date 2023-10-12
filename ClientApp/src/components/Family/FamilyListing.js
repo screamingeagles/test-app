@@ -68,7 +68,7 @@ const Familylisting = (props) => {
                                                 <td>{item.countryName}</td>
                                                 <td>
                                                     {
-                                                        props.role.loggedRole != "registrar" ?
+                                                        props.role.loggedRole === "admin" ?
                                                             <Link to={'/family/view/' + item.id} className="btn btn-primary">View</Link> :
                                                             <div>
                                                                 <Link to={'/family/edit/' + item.id} className="btn btn-primary">Edit</Link>

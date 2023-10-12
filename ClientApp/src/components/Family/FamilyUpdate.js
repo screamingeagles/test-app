@@ -117,7 +117,7 @@ const FamilyUpdate = () => {
                             <div className="col-lg-12">
                                 <div className="form-group">
                                     <label>Relationship to Student</label><br />
-                                    <Relation childToParent={getRelationshipValue} countryValue={relationshipId} />
+                                    <Relation childToParent={getRelationshipValue} relationshipValue={relationshipId} />
                                 </div>
                             </div>
                         </div>

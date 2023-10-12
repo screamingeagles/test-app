@@ -70,7 +70,7 @@ const Studentlisting = (props) => {
                                                 <td>{formatDate(item.dateOfBirth)}</td>
                                                 <td>
                                                     {
-                                                        role !== "registrar" ?
+                                                        role === "admin" ?
                                                             <div>
                                                                 <Link to={'/student/view/' + item.id} className="btn btn-success">View</Link>
                                                                 &nbsp;
